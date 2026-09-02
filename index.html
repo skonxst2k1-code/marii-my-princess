@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>A Secret For You</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Montserrat", Arial, sans-serif;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 15% 20%, rgba(20, 220, 200, 0.35), transparent 25%),
+                radial-gradient(circle at 85% 75%, rgba(220, 20, 55, 0.4), transparent 30%),
+                radial-gradient(circle at center, #1a1a22 0%, #09090d 70%);
+        }
+
+        /* ================= PASSCODE PAGE ================= */
+
+        #passcodePage,
+        #lovePage {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+        }
+
+        #passcodePage {
+            position: relative;
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.35;
+            animation: moveGlow 8s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        body::before {
+            background: #16d6c4;
+            top: -150px;
+            left: -150px;
+        }
+
+        body::after {
+            background: #e52b45;
+            bottom: -180px;
+            right: -150px;
+            animation-delay: -4s;
+        }
+
+        @keyframes moveGlow {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(80px, 50px) scale(1.2);
+            }
+        }
+
+        /* Floating particles */
+
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #5fffe9;
+            box-shadow: 0 0 12px #5fffe9;
+            opacity: 0.7;
+            animation: float 8s infinite linear;
+            pointer-events: none;
+        }
+
+        .particle.red {
+            background: #ff4960;
+            box-shadow: 0 0 12px #ff4960;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(110vh) scale(0);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-10vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 540px;
+            padding: 55px 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+
+            background: rgba(10, 10, 15, 0.78);
+            backdrop-filter: blur(15px);
+
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+
+            box-shadow:
+                0 0 25px rgba(20, 220, 200, 0.2),
+                0 0 50px rgba(229, 43, 69, 0.2),
+                0 20px 70px rgba(0, 0, 0, 0.7);
+
+            transition: transform 1s ease, opacity 1s ease;
+        }
+
+        .lock {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+
+            50% {
+                transform: scale(1.15);
+                opacity: 1;
+            }
+        }
+
+        h1,
+        .love-box h1 {
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        #passcodePage h1 {
+            color: #f5f5f5;
+            margin-bottom: 15px;
+            font-size: clamp(2.4rem, 7vw, 4rem);
+            line-height: 0.95;
+        }
+
+        .turquoise {
+            color: #32e6d3;
+            text-shadow: 0 0 15px rgba(50, 230, 211, 0.45);
+        }
+
+        .red {
+            color: #ff425b;
+            text-shadow: 0 0 15px rgba(255, 66, 91, 0.45);
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 35px;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .line {
+            width: 100px;
+            height: 2px;
+            margin: 0 auto 30px;
+
+            background: linear-gradient(
+                90deg,
+                transparent,
+                #32e6d3,
+                #ff425b,
+                transparent
+            );
+        }
+
+        .code-boxes {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+        }
+
+        .digit {
+            width: 50px;
+            height: 65px;
+
+            border-radius: 12px;
+            border: 1px solid rgba(50, 230, 211, 0.45);
+
+            text-align: center;
+            font-size: 1.9rem;
+            font-weight: bold;
+            outline: none;
+
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+
+            transition: all 0.25s ease;
+        }
+
+        .digit:nth-child(even) {
+            border-color: rgba(255, 66, 91, 0.45);
+        }
+
+        .digit:focus {
+            transform: translateY(-4px);
+            border-color: #32e6d3;
+
+            box-shadow: 0 0 20px rgba(50, 230, 211, 0.5);
+        }
+
+        .correct {
+            background: rgba(50, 230, 211, 0.85) !important;
+            border-color: white !important;
+            color: black !important;
+
+            box-shadow:
+                0 0 25px #32e6d3,
+                0 0 50px rgba(50, 230, 211, 0.5) !important;
+
+            transform: scale(1.08);
+        }
+
+        .wrong {
+            border-color: #ff425b !important;
+            box-shadow: 0 0 20px rgba(255, 66, 91, 0.7) !important;
+            animation: shake 0.35s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-7px);
+            }
+
+            75% {
+                transform: translateX(7px);
+            }
+        }
+
+        button {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 45px;
+            border-radius: 50px;
+
+            font-family: "Montserrat", Arial, sans-serif;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+
+            cursor: pointer;
+            color: white;
+
+            background: linear-gradient(
+                135deg,
+                rgba(30, 190, 180, 0.9),
+                rgba(220, 35, 65, 0.9)
+            );
+
+            transition: all 0.25s ease;
+        }
+
+        button:hover {
+            transform: scale(1.06);
+
+            box-shadow:
+                0 0 30px rgba(50, 230, 211, 0.5),
+                0 0 40px rgba(255, 66, 91, 0.4);
+        }
+
+        #message {
+            margin-top: 25px;
+            min-height: 25px;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .hint {
+            margin-top: 35px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* ================= LOVE PAGE ================= */
+
+        #lovePage {
+            display: none;
+            opacity: 0;
+            transform: scale(0.96);
+            position: relative;
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle at top left, #25d6c7, transparent 35%),
+                radial-gradient(circle at bottom right, #e63946, transparent 40%),
+                linear-gradient(135deg, #16bfb2, #e63946);
+        }
+
+        #lovePage.show {
+            display: flex;
+            animation: revealLove 1.2s ease forwards;
+        }
+
+        @keyframes revealLove {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* ================= FLOATING FLOWERS ================= */
+
+        .flower {
+            position: absolute;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0;
+            animation: flowerFloat linear infinite;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.35));
+        }
+
+        @keyframes flowerFloat {
+            0% {
+                transform:
+                    translateY(110vh)
+                    translateX(0)
+                    rotate(0deg)
+                    scale(0.7);
+
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.9;
+            }
+
+            50% {
+                transform:
+                    translateY(50vh)
+                    translateX(35px)
+                    rotate(180deg)
+                    scale(1);
+            }
+
+            100% {
+                transform:
+                    translateY(-15vh)
+                    translateX(-30px)
+                    rotate(360deg)
+                    scale(0.8);
+
+                opacity: 0;
+            }
+        }
+
+        .love-box {
+            max-width: 850px;
+            padding: 50px 35px;
+
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 30px;
+            text-align: center;
+
+            position: relative;
+            z-index: 2;
+
+            border: 5px solid transparent;
+
+            background-image:
+                linear-gradient(
+                    rgba(255, 255, 255, 0.95),
+                    rgba(255, 255, 255, 0.95)
+                ),
+                linear-gradient(
+                    135deg,
+                    #18c9b9,
+                    #e63946
+                );
+
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+
+            animation: loveBoxAppear 1.5s ease;
+        }
+
+        @keyframes loveBoxAppear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .love-box h1 {
+            color: #111;
+            font-size: clamp(2.8rem, 7vw, 4.5rem);
+            margin-bottom: 30px;
+            line-height: 1;
+        }
+
+        .love-box p {
+            color: #111;
+
+            font-family: "Cormorant Garamond", Georgia, serif;
+
+            font-size: clamp(1.35rem, 3vw, 1.8rem);
+            line-height: 1.55;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .love-box .turquoise {
+            color: #16bfb2;
+        }
+
+        .love-box .red {
+            color: #e63946;
+        }
+
+        .heart {
+            font-size: 3rem;
+            margin-top: 30px;
+            animation: beat 1s infinite alternate;
+        }
+
+        @keyframes beat {
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.2);
+            }
+        }
+
+        /* ================= UNLOCK TRANSITION ================= */
+
+        .unlocking .container {
+            transform: scale(1.08);
+            opacity: 0;
+        }
+
+        .unlocking #passcodePage {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 45px 15px;
+            }
+
+            .digit {
+                width: 43px;
+                height: 60px;
+            }
+
+            .code-boxes {
+                gap: 5px;
+            }
+
+            .love-box {
+                padding: 40px 22px;
+            }
+
+            .flower {
+                font-size: 1.5rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="particle red" style="left: 25%; animation-delay: 2s;"></div>
+    <div class="particle" style="left: 50%; animation-delay: 4s;"></div>
+    <div class="particle red" style="left: 70%; animation-delay: 1s;"></div>
+    <div class="particle" style="left: 90%; animation-delay: 5s;"></div>
+
+
+    <!-- PASSCODE PAGE -->
+
+    <div id="passcodePage">
+
+        <div class="container">
+
+            <div class="lock">🔐</div>
+
+            <h1>
+                <span class="turquoise">Guess the</span>
+                <br>
+                <span class="red">Passcode</span>
+            </h1>
+
+            <div class="line"></div>
+
+            <p class="subtitle">
+                Some secrets are worth discovering...
+            </p>
+
+            <div class="code-boxes">
+                <input class="digit" maxlength="1" inputmode="numeric">
+                <input class="digit" maxlength="1" inputmode="numeric">
+                <input class="digit" maxlength="1" inputmode="numeric">
+                <input class="digit" maxlength="1" inputmode="numeric">
+                <input class="digit" maxlength="1" inputmode="numeric">
+                <input class="digit" maxlength="1" inputmode="numeric">
+            </div>
+
+            <button onclick="checkCode()">CHECK</button>
+
+            <div id="message"></div>
+
+            <div class="hint">
+                Each correct number will remain
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- LOVE PAGE -->
+
+    <div id="lovePage">
+
+        <!-- Animated flowers -->
+
+        <div class="flower" style="left: 5%; font-size: 2.5rem; animation-duration: 11s; animation-delay: 0s;">🌸</div>
+        <div class="flower" style="left: 15%; font-size: 2rem; animation-duration: 14s; animation-delay: 3s;">🌹</div>
+        <div class="flower" style="left: 28%; font-size: 2.8rem; animation-duration: 12s; animation-delay: 6s;">🌷</div>
+        <div class="flower" style="left: 42%; font-size: 2rem; animation-duration: 15s; animation-delay: 2s;">🌸</div>
+        <div class="flower" style="left: 58%; font-size: 2.5rem; animation-duration: 10s; animation-delay: 5s;">🌹</div>
+        <div class="flower" style="left: 70%; font-size: 2rem; animation-duration: 13s; animation-delay: 1s;">🌷</div>
+        <div class="flower" style="left: 82%; font-size: 2.7rem; animation-duration: 16s; animation-delay: 4s;">🌸</div>
+        <div class="flower" style="left: 94%; font-size: 2.2rem; animation-duration: 12s; animation-delay: 7s;">🌹</div>
+
+        <div class="love-box">
+
+            <h1>
+                <span class="turquoise">Heyy</span>
+                <span class="red">My Pretty Girl</span> 💕
+            </h1>
+
+            <p>
+                I missed you so much, and I want you to know that
+                <span class="turquoise">
+                    I love you more than words could ever explain
+                </span>
+                or more than any action can do.
+
+                <br><br>
+
+                I love you so, so much, my darling, and I want it to be you.
+                I want it to be us forever, against everyone.
+
+                <br><br>
+
+                You're my
+                <span class="red">light in the dark</span>,
+                my <span class="turquoise">moon in the sky</span>,
+                and my <span class="red">joy in a world full of sadness</span>.
+
+                <br><br>
+
+                I miss you so, so much, and I'm sorry for not understanding your boundaries.
+                I promise, my dear, to be more understanding and more knowing.
+
+                <br><br>
+
+                <span class="turquoise">
+                    I love you super duper extra much, my beautiful, gorgeous princess.
+                </span> 💕
+            </p>
+
+            <div class="heart">
+                💕❤️💕
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        const password = "200826";
+
+        const inputs = document.querySelectorAll(".digit");
+        const message = document.getElementById("message");
+
+        inputs.forEach((input, index) => {
+
+            input.addEventListener("input", () => {
+
+                input.value = input.value.replace(/[^0-9]/g, "");
+
+                if (input.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+
+            });
+
+            input.addEventListener("keydown", (e) => {
+
+                if (
+                    e.key === "Backspace" &&
+                    !input.value &&
+                    index > 0
+                ) {
+                    inputs[index - 1].focus();
+                }
+
+            });
+
+        });
+
+
+        function checkCode() {
+
+            inputs.forEach((input, index) => {
+
+                if (input.value === password[index]) {
+
+                    input.classList.add("correct");
+                    input.disabled = true;
+
+                } else if (input.value !== "") {
+
+                    input.classList.add("wrong");
+
+                    setTimeout(() => {
+                        input.classList.remove("wrong");
+                        input.value = "";
+                    }, 350);
+
+                }
+
+            });
+
+
+            const finalCode = Array.from(inputs)
+                .map(input => input.value)
+                .join("");
+
+
+            if (finalCode === password) {
+
+                message.innerHTML = "The secret has been unlocked...";
+                message.style.color = "#32e6d3";
+
+                setTimeout(() => {
+                    document.body.classList.add("unlocking");
+                }, 500);
+
+
+                setTimeout(() => {
+
+                    document.getElementById("passcodePage").style.display = "none";
+
+                    const lovePage = document.getElementById("lovePage");
+
+                    lovePage.style.display = "flex";
+
+                    setTimeout(() => {
+                        lovePage.classList.add("show");
+                    }, 50);
+
+                }, 1500);
+
+            } else {
+
+                message.innerHTML = "Not quite... the secret is still locked.";
+                message.style.color = "#ff425b";
+
+            }
+
+        }
+
+
+        document.addEventListener("keydown", function(e) {
+
+            if (e.key === "Enter") {
+                checkCode();
+            }
+
+        });
+    </script>
+
+</body>
+</html>
